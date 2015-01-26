@@ -166,6 +166,15 @@ def generate_body_node(slides_yaml, conf):
 
     return root
 
+
+def generate_main_slide(slides_yaml, conf):
+    pass
+
+
+def generate_contact_slide(slides_yaml, conf):
+    pass
+
+
 def main():
     parser = argparse.ArgumentParser('yaml_reveal', description='YAML to Reveal.js converter')
     parser.add_argument('-o', dest='output_filename', help='Output filename')
