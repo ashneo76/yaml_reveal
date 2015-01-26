@@ -1,0 +1,2 @@
+- Remove XML header from the generated HTML file
+- Remove HTML normalization to &lt; for markdown/html
