@@ -56,3 +56,5 @@ docs/_build/
 target/
 
 *.swp
+.idea/workspace.xml
+.idea/tasks.xml
