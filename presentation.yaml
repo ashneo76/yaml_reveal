@@ -48,5 +48,9 @@ slides:
   - title: "Code example"
     content: ""
     type: "code"
+  - children:
+    - title: Child41
+      content: "This is child content"
+    - title: Child42
   - title: "The End"
     content: " - <a href=\"www.ashishshah.net\">Online</a>"
