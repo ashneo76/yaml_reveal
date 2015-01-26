@@ -1,0 +1,42 @@
+- <section>
+- <aside class="notes"> Notes
+- <section> inside <section> creates vertical sides
+- <section data-markdown>
+	<script type="text/template">
+  Markdown support
+- <p class="fragment"> Fragment inside a section
+- Fragment styles: grow, shrink, roll-in, fadeout, current-visible, highlight-blue, highlight-red
+  <p class="fragment grow">
+- transitions
+- themes
+- <section data-background="">
+  + RGB
+  + Img Link
+  + data-background-repeat="repeat"
+    * data-background-size="100px"
+  + Video
+    * data-background-video
+- Transitions
+  * <section data-transition="slide" data-background="#rrggbb" data-background-transition="zoom">
+- Code
+  * <pre><code style="word-wrap: break-word;">
+  * <pre><code data-trim contenteditable>
+- <UL>, <OL>, <TABLE>
+- Quotes:
+  1. Inline
+     - <q cite="http://">&ldquo;....&rdquo;</q>
+  2. block
+     - <blockquote cite="http://">
+- Internal side links
+  + <a href="#/2/3">
+- Keyboard shortcuts
+  + S : Speaker View
+  + Esc : Overview
+  + B or . : Pause
+- Global state
+  + <section data-state="classname">
+- pdf export
+- Custom JS per slide
+  + <section data-state="eventname.blah">
+  + <script type="text/javascript">Reveal.addEventListener("eventname.blah", function() {})</script>
+
