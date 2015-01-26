@@ -15,7 +15,7 @@ def parse_slide(slide, conf):
         for child_slide in slide['children']:
             et_slide.append(parse_slide(child_slide, conf))
     else:
-        if 'title' in slide:
+        if 'title' in slide and slide['title'] != '':
             title = et.Element(conf['title'])
             title.text = slide['title']
             et_slide.append(title)
@@ -62,7 +62,7 @@ def prettify(elem):
     rough_string = et.tostring(elem, 'utf-8')
     unescaped = saxutils.unescape(rough_string)
     soup = BeautifulSoup(unescaped)
-    return soup.prettify()
+    return unescaped
 
 
 def generate_head_node(metadata, conf):

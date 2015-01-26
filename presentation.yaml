@@ -19,7 +19,8 @@ slides:
   - title: "Slide 1"
     notes: "Slide notes"
   - title: "Child 1"
-    content: "## Markdown support
+    content: |
+              ## Markdown support
 
               Write content using inline or external Markdown.
               Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
@@ -30,7 +31,7 @@ slides:
                 Write content using inline or external Markdown.
                 Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
               </section>
-              ```"
+              ```
     type: "markdown"
     background:
       type: "color" # color, image, tile, video
@@ -52,5 +53,9 @@ slides:
     - title: Child41
       content: "This is child content"
     - title: Child42
-  - title: "The End"
-    content: " - <a href=\"www.ashishshah.net\">Online</a>"
+  - title: ""
+    type: "md"
+    content: |
+              ## THE END
+
+              * [Online](http://www.ashishshah.net)
