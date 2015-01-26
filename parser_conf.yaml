@@ -1,5 +1,7 @@
 html:
-  title: 'h2'
+  slides:
+    title: 'h2'
+    content: 'p'
   main:
     title: 'h1'
     description: 'h3'

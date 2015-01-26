@@ -11,7 +11,7 @@ def parse_slide(slide, conf):
     et_slide = et.Element('section')
 
     if 'title' in slide:
-        title = et.Element(conf['html']['title'])
+        title = et.Element(conf['title'])
         title.text = slide['title']
         et_slide.append(title)
 
@@ -24,7 +24,7 @@ def parse_slide(slide, conf):
             type = 'text'
 
         if type == 'text':
-            section = et.Element('div')
+            section = et.Element(conf['content'])
             section.text = content
             et_slide.append(section)
         elif type == 'md' or type == 'markdown':
@@ -123,8 +123,48 @@ def generate_head_node(metadata, conf):
 
 
 def generate_body_node(slides_yaml, conf):
-    return parse_slides(slides_yaml['slides'], conf)
+    root = et.Element('body')
 
+    # parse slides
+    slides_ctr = et.Element('div', {'class': 'reveal'})
+    slides_ctr.append(parse_slides(slides_yaml['slides'], conf['html']['slides']))
+    root.append(slides_ctr)
+
+    # include necessary script tags
+    script_node = et.Element('script', {'type': 'text/javascript',
+                                        'src': 'lib/js/head.min.js'})
+    script_node.text = "// do nothing"
+    root.append(script_node)
+
+    script_node = et.Element('script', {'type': 'text/javascript',
+                                        'src': 'js/reveal.js'})
+    script_node.text = "// do nothing"
+    root.append(script_node)
+
+    script_node = et.Element('script', {'type': 'text/javascript'})
+    script_node.text = '''// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});'''
+    root.append(script_node)
+
+    return root
 
 def main():
     parser = argparse.ArgumentParser('yaml_reveal', description='YAML to Reveal.js converter')
