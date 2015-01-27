@@ -209,6 +209,10 @@ def generate_contact_slide(slides_yaml, conf):
     return root
 
 
+def generate_html(root_node):
+    return '<!doctype html>\n' + prettify(root_node)
+
+
 def main():
     parser = argparse.ArgumentParser('yaml_reveal', description='YAML to Reveal.js converter')
     parser.add_argument('-o', dest='output_filename', help='Output filename')
@@ -227,7 +231,7 @@ def main():
     # fileDom = et.ElementTree(root_node)
     # fileDom.write(open(args.output_filename, 'w+'))
     out = open(args.output_filename, 'w+')
-    out.write(prettify(root_node))
+    out.write(generate_html(root_node))
 
 
 if __name__ == '__main__':
