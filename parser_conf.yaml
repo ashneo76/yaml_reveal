@@ -5,5 +5,5 @@ html:
   main:
     title: 'h1'
     description: 'h3'
-    author: ''
+    author: 'div'
     social: ''

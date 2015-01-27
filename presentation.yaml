@@ -53,6 +53,24 @@ slides:
     - title: Child41
       content: "This is child content"
     - title: Child42
+    - type: "md"
+      content: |
+                   * li1
+                   * li 2
+                   * li 4
+
+                   this is something big
+                   -------------
+                   [Google](www.google.com)
+
+                   and something small
+                   ==========
+                   - what
+                   - is
+                   - happening
+                   - nothing
+                     * but
+                     * drama
   - title: ""
     type: "md"
     content: |

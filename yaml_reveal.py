@@ -14,6 +14,8 @@ def parse_slide(slide, conf):
     if 'children' in slide and len(slide['children']) > 0:
         for child_slide in slide['children']:
             et_slide.append(parse_slide(child_slide, conf))
+    # elif 'fragments' in slide and len(slide['fragments']) > 0:
+    #     pass
     else:
         if 'title' in slide and slide['title'] != '':
             title = et.Element(conf['title'])
@@ -51,8 +53,11 @@ def parse_slide(slide, conf):
 
 def parse_slides(slides_yaml, conf):
     root = et.Element('div', {'class': 'slides'})
-    for slide_yaml in slides_yaml:
-        root.append(parse_slide(slide_yaml, conf))
+    root.append(generate_main_slide(slides_yaml['metadata'], conf['html']['main']))
+    if 'slides' in slides_yaml and len(slides_yaml['slides']) > 0:
+        for slide_yaml in slides_yaml['slides']:
+            root.append(parse_slide(slide_yaml, conf['html']['slides']))
+    root.append(generate_contact_slide(slides_yaml['metadata'], conf['html']['main']))
     return root
 
 
@@ -129,7 +134,7 @@ def generate_body_node(slides_yaml, conf):
 
     # parse slides
     slides_ctr = et.Element('div', {'class': 'reveal'})
-    slides_ctr.append(parse_slides(slides_yaml['slides'], conf['html']['slides']))
+    slides_ctr.append(parse_slides(slides_yaml, conf))
     root.append(slides_ctr)
 
     # include necessary script tags
@@ -170,11 +175,38 @@ def generate_body_node(slides_yaml, conf):
 
 
 def generate_main_slide(slides_yaml, conf):
-    pass
+    root = et.Element('section')
+
+    title = et.Element(conf['title'])
+    title.text = slides_yaml['presentation']['title']
+
+    desc = et.Element(conf['description'])
+    desc.text = slides_yaml['presentation']['description']
+
+    author = et.Element(conf['author'])
+    author.text = slides_yaml['author']['name']
+
+    root.append(title)
+    root.append(desc)
+    root.append(author)
+
+    return root
 
 
 def generate_contact_slide(slides_yaml, conf):
-    pass
+    root = et.Element('section')
+
+    author = et.Element(conf['title'])
+    author.text = slides_yaml['author']['name']
+
+    email_addr = slides_yaml['author']['email']
+    email = et.Element('a', {'href': 'mailto:' + email_addr})
+    email.text = email_addr
+
+    root.append(author)
+    root.append(email)
+
+    return root
 
 
 def main():
