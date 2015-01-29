@@ -16,7 +16,7 @@ metadata:
   printable: true
   mobile: true
   reveal:
-    transition: convex # none, fade, slide, convex, concave, zoom
+    transition: convex
 slides:
   - title: "Slide 1"
     notes: "Slide notes"

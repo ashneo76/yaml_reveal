@@ -58,3 +58,4 @@ target/
 *.swp
 .idea/workspace.xml
 .idea/tasks.xml
+*.mde

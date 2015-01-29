@@ -116,7 +116,7 @@ def generate_head_node(metadata, conf):
         if 'general' in metadata['theme']:
             general_theme = metadata['theme']['general']
         else:
-            general_theme = 'black'
+            general_theme = 'night'
         theme_elem = get_stylesheet('css/theme/' + general_theme + '.css')
         theme_elem.attrib['id'] = 'theme'
         root.append(theme_elem)
@@ -165,7 +165,7 @@ def generate_body_node(slides_yaml, conf):
     # reveal.js initialization
     script_node = et.Element('script', {'type': 'text/javascript'})
     reveal_params = {'controls': 'true', 'progress': 'true', 'history': 'true',
-                     'center': 'true', 'transition': 'convex'}
+                     'center': 'true', 'transition': 'convex', 'touch': 'true'}
     overlay_dict_on(slides_yaml['metadata']['reveal'], reveal_params)
     revealjs_pre = '''  // Full list of configuration options available at:
     // https://github.com/hakimel/reveal.js#configuration
