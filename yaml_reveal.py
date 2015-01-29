@@ -62,9 +62,11 @@ def parse_slide(slide, conf):
 def parse_slides(slides_yaml, conf):
     root = et.Element('div', {'class': 'slides'})
     root.append(generate_main_slide(slides_yaml['metadata'], conf['html']['main']))
-    if 'slides' in slides_yaml and len(slides_yaml['slides']) > 0:
-        for slide_yaml in slides_yaml['slides']:
-            root.append(parse_slide(slide_yaml, conf['html']['slides']))
+    if 'slides' in slides_yaml and\
+                    slides_yaml['slides'] is not None:
+        if len(slides_yaml['slides']) > 0:
+            for slide_yaml in slides_yaml['slides']:
+                root.append(parse_slide(slide_yaml, conf['html']['slides']))
     root.append(generate_contact_slide(slides_yaml['metadata'], conf['html']['main']))
     return root
 
