@@ -9,7 +9,7 @@ metadata:
         name: "@twitterHandle"
   presentation:
     title: "Docker and Virtualization"
-    description: ""
+    description: "A presentation on the state of docker and virtualization"
   theme:
     general: 'night'
     code: 'zenburn'
@@ -43,7 +43,7 @@ slides:
         repeat: "repeat"
   - title: "Child 2"
     content: "child 2"
-    type: "text" # text, markdown/md, html, file
+    type: "text" # text, markdown/md, html, file, code
   - title: "Child 3"
     fragments: # content and fragments are exclusive
       - "frag 1"
