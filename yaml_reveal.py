@@ -179,7 +179,9 @@ def generate_body_node(slides_yaml, conf):
             { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
             { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
             { src: 'plugin/zoom-js/zoom.js', async: true },
-            { src: 'plugin/notes/notes.js', async: true }
+            { src: 'plugin/notes/notes.js', async: true },
+            { src: 'plugin/remotes/remotes.js', async: true },
+            { src: 'plugin/math/math.js', async: true }
         ]'''
     revealjs_post = '''
     });'''
