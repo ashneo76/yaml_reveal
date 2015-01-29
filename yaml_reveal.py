@@ -13,7 +13,8 @@ def parse_slide(slide, conf):
 
     if 'children' in slide and len(slide['children']) > 0:
         for child_slide in slide['children']:
-            et_slide.append(parse_slide(child_slide, conf))
+            # If a slide is empty then don't append that
+            non_null_node_append(et_slide, parse_slide(child_slide, conf))
     # elif 'fragments' in slide and len(slide['fragments']) > 0:
     #     pass
     else:
@@ -22,25 +23,31 @@ def parse_slide(slide, conf):
         else:
             type = 'text'
 
-        if 'content' in slide:
-            content = slide['content']
-
-            if type == 'text':
-                if 'title' in slide and slide['title'] != '':
-                    title = et.Element(conf['title'])
-                    title.text = slide['title']
-                    et_slide.append(title)
+        if type == 'text':
+            if 'title' in slide and slide['title'] != '':
+                title = et.Element(conf['title'])
+                title.text = slide['title']
+                et_slide.append(title)
+            if 'content' in slide:
+                content = slide['content']
                 section = et.Element(conf['content'])
                 section.text = content
                 et_slide.append(section)
-            elif type == 'md' or type == 'markdown':
+        elif type == 'md' or type == 'markdown':
+            if 'content' in slide:
+                content = slide['content']
                 section = et.Element('section', {'data-markdown': ''})
                 script = et.Element('script', {'type': 'text/template'})
                 script.text = content
                 section.append(script)
                 et_slide.append(section)
-            elif type == 'code':
-                pass
+        elif type == 'code':
+            if 'title' in slide and slide['title'] != '':
+                title = et.Element(conf['title'])
+                title.text = slide['title']
+                et_slide.append(title)
+        else:
+            et_slide = None
 
         # it could be an empty slide
         # with just notes
@@ -88,11 +95,15 @@ def generate_head_node(metadata, conf):
                                         'content': metadata['presentation']['description']}
         ))
 
-    if 'author' in metadata:
+    if 'author' in metadata and 'name' in metadata['author']:
         root.append(et.Element('meta', {'name': 'author',
                                         'content': metadata['author']['name']}))
 
-    if 'mobile' in metadata and metadata['mobile']:
+    if 'mobile' in metadata:
+        is_mobile = metadata['mobile']
+    else:
+        is_mobile = True
+    if is_mobile:
         root.append(et.Element('meta', {'name': 'apple-mobile-web-app-capable', 'content': 'yes'}))
         root.append(et.Element('meta', {'name': 'apple-mobile-web-app-status-bar-style',
                                         'content': 'black-translucent'}))
@@ -100,25 +111,27 @@ def generate_head_node(metadata, conf):
                                         'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui'}))
 
     # stylesheets
-    root.append(et.Element('link', {'rel': 'stylesheet',
-                                    'href': 'css/reveal.css'}))
+    root.append(get_stylesheet('css/reveal.css'))
     if 'theme' in metadata:
         if 'general' in metadata['theme']:
             general_theme = metadata['theme']['general']
         else:
             general_theme = 'black'
-        root.append(et.Element('link', {'rel': 'stylesheet',
-                                        'id': 'theme',
-                                        'href': 'css/theme/' + general_theme + '.css'}))
+        theme_elem = get_stylesheet('css/theme/' + general_theme + '.css')
+        theme_elem.attrib['id'] = 'theme'
+        root.append(theme_elem)
 
         if 'code' in metadata['theme']:
             code_theme = metadata['theme']['code']
         else:
             code_theme = 'zenburn'
-        root.append(et.Element('link', {'rel': 'stylesheet',
-                                        'href': 'lib/css/' + code_theme + '.css'}))
+        root.append(get_stylesheet('lib/css/' + code_theme + '.css'))
 
-    if 'printable' in metadata and metadata['printable']:
+    if 'printable' in metadata:
+        is_printable = metadata['printable']
+    else:
+        is_printable = True
+    if is_printable:
         print_node = et.Element('script')
         print_node.text = '''var link = document.createElement( 'link' );
         link.rel = 'stylesheet';
@@ -225,9 +238,19 @@ def dict_to_js_str(dictionary):
     return js_str
 
 
+def non_null_node_append(src_node, tgt_node):
+    if tgt_node is not None:
+        src_node.append(tgt_node)
+
+
 def overlay_dict_on(src_dict, tgt_dict):
     for key in src_dict.keys():
         tgt_dict[key] = src_dict[key]
+
+
+def get_stylesheet(css_file):
+    return et.Element('link', {'rel': 'stylesheet',
+                      'href': css_file})
 
 
 def generate_html(root_node):
