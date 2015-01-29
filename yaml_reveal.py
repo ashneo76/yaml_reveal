@@ -141,6 +141,46 @@ def generate_head_node(metadata, conf):
         document.getElementsByTagName( 'head' )[0].appendChild( link );'''
         root.append(print_node)
 
+    fullscreen_node = et.Element('script')
+    fullscreen_node.text = '''
+        var fullscreen = false;
+        // Find the right method, call on correct element
+        function launchFullscreen(element) {
+          if(element.requestFullscreen) {
+            element.requestFullscreen();
+          } else if(element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+          } else if(element.webkitRequestFullscreen) {
+            element.webkitRequestFullscreen();
+          } else if(element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+          }
+        }
+
+        // Exit fullscreen
+        function exitFullscreen() {
+          if(document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if(document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if(document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          }
+        }
+
+        function toggleFullScreen(){
+            if(fullscreen == false)
+            {
+                launchFullscreen(document.documentElement); // the whole page
+                fullscreen = true;
+            }else{
+                exitFullscreen();
+                fullscreen = false;
+            }
+        }
+
+    '''
+    root.append(fullscreen_node)
     return root
 
 
@@ -185,10 +225,18 @@ def generate_body_node(slides_yaml, conf):
         ]'''
     revealjs_post = '''
     });'''
+    revealjs_fs = '''
+    Reveal.configure({
+        keyboard: {
+            102: 'toggleFullScreen'
+        }
+    });
+    '''
     script_node.text = revealjs_pre\
                        + dict_to_js_str(reveal_params)\
                        + revealjs_dependencies\
-                       + revealjs_post
+                       + revealjs_post\
+                       + revealjs_fs
     root.append(script_node)
 
     return root

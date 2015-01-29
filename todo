@@ -1,3 +1,4 @@
 - Programmatic addition of JS and CSS
 - Add fragment support
 - Add ability to render markdown from files
+- Fix pressing 'f' in fullscreen mode to exit full screen mode
