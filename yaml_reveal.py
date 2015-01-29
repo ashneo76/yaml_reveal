@@ -17,20 +17,19 @@ def parse_slide(slide, conf):
     # elif 'fragments' in slide and len(slide['fragments']) > 0:
     #     pass
     else:
-        if 'title' in slide and slide['title'] != '':
-            title = et.Element(conf['title'])
-            title.text = slide['title']
-            et_slide.append(title)
+        if 'type' in slide:
+            type = slide['type']
+        else:
+            type = 'text'
 
         if 'content' in slide:
             content = slide['content']
 
-            if 'type' in slide:
-                type = slide['type']
-            else:
-                type = 'text'
-
             if type == 'text':
+                if 'title' in slide and slide['title'] != '':
+                    title = et.Element(conf['title'])
+                    title.text = slide['title']
+                    et_slide.append(title)
                 section = et.Element(conf['content'])
                 section.text = content
                 et_slide.append(section)
@@ -43,6 +42,8 @@ def parse_slide(slide, conf):
             elif type == 'code':
                 pass
 
+        # it could be an empty slide
+        # with just notes
         if 'notes' in slide:
             notes = et.Element('aside', {'class': 'notes'})
             notes.text = slide['notes']
@@ -157,7 +158,7 @@ def generate_body_node(slides_yaml, conf):
         history: true,
         center: true,
 
-        transition: 'slide', // none/fade/slide/convex/concave/zoom
+        transition: 'convex', // none/fade/slide/convex/concave/zoom
 
         // Optional reveal.js plugins
         dependencies: [

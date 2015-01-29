@@ -1,4 +1,3 @@
 - Programmatic addition of JS and CSS
 - Sensible defaults for a lot of the slide configuration stuff
 - Add fragment support
-- Move content type to the highest priority in the slide construction logic so that if there is markdown, then slide title is ignored
