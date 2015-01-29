@@ -2,21 +2,9 @@ metadata:
   author:
     name: "Ashish Shah"
     email: "a@a.com"
-    social:
-      - link: "http://"
-        name: Website
-      - link: "http://twitter.com/"
-        name: "@twitterHandle"
   presentation:
     title: "Docker and Virtualization"
     description: "A presentation on the state of docker and virtualization"
-  theme:
-    general: 'night'
-    code: 'zenburn'
-  printable: true
-  mobile: true
-  reveal:
-    transition: convex
 slides:
   - title: "Slide 1"
     notes: "Slide notes"

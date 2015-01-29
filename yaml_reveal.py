@@ -112,20 +112,19 @@ def generate_head_node(metadata, conf):
 
     # stylesheets
     root.append(get_stylesheet('css/reveal.css'))
+
+    general_theme = 'night'
+    code_theme = 'zenburn'
     if 'theme' in metadata:
         if 'general' in metadata['theme']:
             general_theme = metadata['theme']['general']
-        else:
-            general_theme = 'night'
-        theme_elem = get_stylesheet('css/theme/' + general_theme + '.css')
-        theme_elem.attrib['id'] = 'theme'
-        root.append(theme_elem)
-
         if 'code' in metadata['theme']:
             code_theme = metadata['theme']['code']
-        else:
-            code_theme = 'zenburn'
-        root.append(get_stylesheet('lib/css/' + code_theme + '.css'))
+
+    theme_elem = get_stylesheet('css/theme/' + general_theme + '.css')
+    theme_elem.attrib['id'] = 'theme'
+    root.append(theme_elem)
+    root.append(get_stylesheet('lib/css/' + code_theme + '.css'))
 
     if 'printable' in metadata:
         is_printable = metadata['printable']
@@ -166,7 +165,8 @@ def generate_body_node(slides_yaml, conf):
     script_node = et.Element('script', {'type': 'text/javascript'})
     reveal_params = {'controls': 'true', 'progress': 'true', 'history': 'true',
                      'center': 'true', 'transition': 'convex', 'touch': 'true'}
-    overlay_dict_on(slides_yaml['metadata']['reveal'], reveal_params)
+    if 'reveal' in slides_yaml['metadata']:
+        overlay_dict_on(slides_yaml['metadata']['reveal'], reveal_params)
     revealjs_pre = '''  // Full list of configuration options available at:
     // https://github.com/hakimel/reveal.js#configuration
     Reveal.initialize({'''
