@@ -1,3 +1,4 @@
 - Programmatic addition of JS and CSS
 - Sensible defaults for a lot of the slide configuration stuff
 - Add fragment support
+- Add ability to render markdown from files

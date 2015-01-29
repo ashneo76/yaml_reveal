@@ -149,18 +149,15 @@ def generate_body_node(slides_yaml, conf):
     script_node.text = "// do nothing"
     root.append(script_node)
 
+    # reveal.js initialization
     script_node = et.Element('script', {'type': 'text/javascript'})
-    script_node.text = '''  // Full list of configuration options available at:
+    reveal_params = {'controls': 'true', 'progress': 'true', 'history': 'true',
+                     'center': 'true', 'transition': 'convex'}
+    overlay_dict_on(slides_yaml['metadata']['reveal'], reveal_params)
+    revealjs_pre = '''  // Full list of configuration options available at:
     // https://github.com/hakimel/reveal.js#configuration
-    Reveal.initialize({
-        controls: true,
-        progress: true,
-        history: true,
-        center: true,
-
-        transition: 'convex', // none/fade/slide/convex/concave/zoom
-
-        // Optional reveal.js plugins
+    Reveal.initialize({'''
+    revealjs_dependencies = '''// Optional reveal.js plugins
         dependencies: [
             { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
             { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
@@ -168,8 +165,13 @@ def generate_body_node(slides_yaml, conf):
             { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
             { src: 'plugin/zoom-js/zoom.js', async: true },
             { src: 'plugin/notes/notes.js', async: true }
-        ]
+        ]'''
+    revealjs_post = '''
     });'''
+    script_node.text = revealjs_pre\
+                       + dict_to_js_str(reveal_params)\
+                       + revealjs_dependencies\
+                       + revealjs_post
     root.append(script_node)
 
     return root
@@ -208,6 +210,24 @@ def generate_contact_slide(slides_yaml, conf):
     root.append(email)
 
     return root
+
+
+def dict_to_js_str(dictionary):
+    js_str = ''
+    for key in dictionary.keys():
+        js_str += key+': '
+        value = dictionary[key].lower()
+        if value == 'true' or value == 'false':
+            js_str += value
+        else:
+            js_str += '\'' + value + '\''
+        js_str += ',\n\t'
+    return js_str
+
+
+def overlay_dict_on(src_dict, tgt_dict):
+    for key in src_dict.keys():
+        tgt_dict[key] = src_dict[key]
 
 
 def generate_html(root_node):

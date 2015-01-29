@@ -11,10 +11,12 @@ metadata:
     title: "Docker and Virtualization"
     description: ""
   theme:
-    general: 'black'
+    general: 'night'
     code: 'zenburn'
   printable: true
   mobile: true
+  reveal:
+    transition: convex # none, fade, slide, convex, concave, zoom
 slides:
   - title: "Slide 1"
     notes: "Slide notes"
@@ -41,7 +43,7 @@ slides:
         repeat: "repeat"
   - title: "Child 2"
     content: "child 2"
-    type: "text"
+    type: "text" # text, markdown/md, html, file
   - title: "Child 3"
     fragments: # content and fragments are exclusive
       - "frag 1"
