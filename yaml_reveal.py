@@ -113,7 +113,7 @@ def generate_head_node(metadata, conf):
                                         'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui'}))
 
     # stylesheets
-    root.append(get_stylesheet('css/reveal.css'))
+    root.append(get_stylesheet_node('css/reveal.css'))
 
     general_theme = 'night'
     code_theme = 'zenburn'
@@ -123,10 +123,18 @@ def generate_head_node(metadata, conf):
         if 'code' in metadata['theme']:
             code_theme = metadata['theme']['code']
 
-    theme_elem = get_stylesheet('css/theme/' + general_theme + '.css')
+    theme_elem = get_stylesheet_node('css/theme/' + general_theme + '.css')
     theme_elem.attrib['id'] = 'theme'
     root.append(theme_elem)
-    root.append(get_stylesheet('lib/css/' + code_theme + '.css'))
+    root.append(get_stylesheet_node('lib/css/' + code_theme + '.css'))
+
+    if 'custom' in metadata:
+        if 'css' in metadata['custom'] and type(metadata['custom']['css']) == list:
+            for css in metadata['custom']['css']:
+                root.append(get_stylesheet_node(css))
+        if 'js' in metadata['custom'] and type(metadata['custom']['js']) == list:
+            for js in metadata['custom']['js']:
+                root.append(get_script_node(js))
 
     if 'printable' in metadata:
         is_printable = metadata['printable']
@@ -193,15 +201,8 @@ def generate_body_node(slides_yaml, conf):
     root.append(slides_ctr)
 
     # include necessary script tags
-    script_node = et.Element('script', {'type': 'text/javascript',
-                                        'src': 'lib/js/head.min.js'})
-    script_node.text = "// do nothing"
-    root.append(script_node)
-
-    script_node = et.Element('script', {'type': 'text/javascript',
-                                        'src': 'js/reveal.js'})
-    script_node.text = "// do nothing"
-    root.append(script_node)
+    root.append(get_script_node('lib/js/head.min.js'))
+    root.append(get_script_node('js/reveal.js'))
 
     # reveal.js initialization
     script_node = et.Element('script', {'type': 'text/javascript'})
@@ -300,9 +301,16 @@ def overlay_dict_on(src_dict, tgt_dict):
         tgt_dict[key] = src_dict[key]
 
 
-def get_stylesheet(css_file):
+def get_stylesheet_node(css_file):
     return et.Element('link', {'rel': 'stylesheet',
                       'href': css_file})
+
+
+def get_script_node(js):
+    script_node = et.Element('script', {'type': 'text/javascript',
+                                        'src': js})
+    script_node.text = "// do nothing"
+    return script_node
 
 
 def generate_html(root_node):

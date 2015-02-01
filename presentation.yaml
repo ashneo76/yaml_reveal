@@ -17,6 +17,9 @@ metadata:
   mobile: true
   reveal:
     transition: convex
+  custom:
+    css:
+      - 'css/user.css'
 slides:
   - title: "Slide 1"
     notes: "Slide notes"
