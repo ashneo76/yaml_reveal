@@ -110,7 +110,7 @@ def prettify(elem):
     return unescaped
 
 
-def generate_head_node(metadata, conf):
+def generate_head_node(metadata):
     root = et.Element('head')
 
     if 'charset' in metadata:
@@ -353,6 +353,15 @@ def generate_html(root_node):
     return '<!doctype html>\n' + prettify(root_node)
 
 
+def parse_yaml(conf, slide_yaml):
+    root_node = et.Element('html', {'lang': 'en'})
+    head_node = generate_head_node(slide_yaml['metadata'])
+    body_node = generate_body_node(slide_yaml, conf)
+    root_node.append(head_node)
+    root_node.append(body_node)
+    return root_node
+
+
 def main():
     parser = argparse.ArgumentParser('yaml_reveal', description='YAML to Reveal.js converter')
     parser.add_argument('-o', dest='output_filename', help='Output filename')
@@ -361,12 +370,7 @@ def main():
 
     conf = yaml.load(open('parser_conf.yaml'))
     slide_yaml = yaml.load(open(args.filename))
-
-    root_node = et.Element('html', {'lang': 'en'})
-    head_node = generate_head_node(slide_yaml['metadata'], conf)
-    body_node = generate_body_node(slide_yaml, conf)
-    root_node.append(head_node)
-    root_node.append(body_node)
+    root_node = parse_yaml(conf, slide_yaml)
 
     # fileDom = et.ElementTree(root_node)
     # fileDom.write(open(args.output_filename, 'w+'))
