@@ -1,4 +1,5 @@
-__author__ = 'ashah'
+#!/usr/bin/python
+__author__ = 'ashish'
 
 import yaml
 from xml.etree import ElementTree as et
