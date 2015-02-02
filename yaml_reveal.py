@@ -136,6 +136,11 @@ def generate_head_node(metadata, conf):
             for js in metadata['custom']['js']:
                 root.append(get_script_node(js))
 
+        if 'font' in metadata['custom']:
+            style_node = et.Element('style')
+            style_node.text = 'html * { font-family: \'' + metadata['custom']['font'] + '\', serif !important; }'
+            root.append(style_node)
+
     if 'printable' in metadata:
         is_printable = metadata['printable']
     else:
@@ -303,7 +308,8 @@ def overlay_dict_on(src_dict, tgt_dict):
 
 def get_stylesheet_node(css_file):
     return et.Element('link', {'rel': 'stylesheet',
-                      'href': css_file})
+                               'href': css_file,
+                               'type': 'text/css'})
 
 
 def get_script_node(js):
