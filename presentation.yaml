@@ -53,8 +53,13 @@ slides:
       - "frag 1"
       - "frag 2"
   - title: "Code example"
-    content: ""
+    content: |
+            public static void main(){
+              System.out.println();
+            }
     type: "code"
+  - type: 'file'
+    filename: 'docker_tools.md'
   - children:
     - title: Child41
       content: "This is child content"

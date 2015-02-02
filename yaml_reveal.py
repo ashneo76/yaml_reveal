@@ -9,6 +9,7 @@ from BeautifulSoup import BeautifulSoup
 
 # returns an ElementTree element
 def parse_slide(slide, conf):
+    add_notes = True
     et_slide = et.Element('section')
 
     if 'children' in slide and len(slide['children']) > 0:
@@ -46,12 +47,41 @@ def parse_slide(slide, conf):
                 title = et.Element(conf['title'])
                 title.text = slide['title']
                 et_slide.append(title)
+            if 'content' in slide and slide['content'] != '':
+                pre_node = et.Element('pre')
+                code_node = et.Element('code', {'data-trim': ''})
+                code_node.text = slide['content']
+                pre_node.append(code_node)
+                et_slide.append(pre_node)
+        elif type == 'file':
+            horiz_sep = '^\\n\\n\\n'
+            vert_sep = '^\\n\\n'
+            notes = '^Note:'
+            charset = 'utf-8'
+
+            if 'separator' in slide:
+                if 'horizontal' in slide['separator']:
+                    horiz_sep = slide['separator']['horizontal']
+                if 'vertical' in slide['separator']:
+                    vert_sep = slide['separator']['vertical']
+            if 'notes' in slide:
+                notes = slide['notes']
+            if 'charset' in slide:
+                charset = slide['charset']
+
+            if 'filename' in slide and slide['filename'] is not None:
+                et_slide.attrib['data-markdown'] = slide['filename']
+                et_slide.attrib['data-separator'] = horiz_sep
+                et_slide.attrib['data-separator-vertical'] = vert_sep
+                et_slide.attrib['data-separator-notes'] = notes
+                et_slide.attrib['data-charset'] = charset
+                add_notes = False
         else:
             et_slide = None
 
         # it could be an empty slide
         # with just notes
-        if 'notes' in slide:
+        if 'notes' in slide and add_notes:
             notes = et.Element('aside', {'class': 'notes'})
             notes.text = slide['notes']
             et_slide.append(notes)
