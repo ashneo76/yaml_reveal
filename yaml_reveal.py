@@ -69,7 +69,7 @@ def parse_slide(slide, conf):
                 et_slide.attrib['data-separator-notes'] = notes
                 et_slide.attrib['data-charset'] = charset
                 add_notes = False
-        elif type == 'fragment':
+        elif type == 'fragments':
             title_append(et_slide, slide, conf['title'])
             count = 1
             for fragment in slide['fragments']:

@@ -77,7 +77,7 @@ slides:
         - 'item b'
   - children:
     - title: Slide5
-      type: fragment
+      type: fragments
       fragments:
         - 'slide 5.1'
         - 'slide 5.2'
