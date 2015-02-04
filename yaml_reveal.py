@@ -17,8 +17,6 @@ def parse_slide(slide, conf):
         for child_slide in slide['children']:
             # If a slide is empty then don't append that
             non_null_node_append(et_slide, parse_slide(child_slide, conf))
-    # elif 'fragments' in slide and len(slide['fragments']) > 0:
-    #     pass
     else:
         if 'type' in slide:
             type = slide['type']
@@ -77,6 +75,17 @@ def parse_slide(slide, conf):
                 et_slide.attrib['data-separator-notes'] = notes
                 et_slide.attrib['data-charset'] = charset
                 add_notes = False
+        elif type == 'fragment':
+            if 'title' in slide and slide['title'] != '':
+                title = et.Element(conf['title'])
+                title.text = slide['title']
+                et_slide.append(title)
+            count = 1
+            for fragment in slide['fragments']:
+                p_node = et.Element('p', {'class': 'fragment', 'data-fragment-index': str(count)})
+                p_node.text = fragment
+                et_slide.append(p_node)
+                count += 1
         else:
             et_slide = None
 
@@ -93,7 +102,7 @@ def parse_slide(slide, conf):
 def parse_slides(slides_yaml, conf):
     root = et.Element('div', {'class': 'slides'})
     root.append(generate_main_slide(slides_yaml['metadata'], conf['html']['main']))
-    if 'slides' in slides_yaml and\
+    if 'slides' in slides_yaml and \
                     slides_yaml['slides'] is not None:
         if len(slides_yaml['slides']) > 0:
             for slide_yaml in slides_yaml['slides']:
@@ -269,10 +278,10 @@ def generate_body_node(slides_yaml, conf):
         }
     });
     '''
-    script_node.text = revealjs_pre\
-                       + dict_to_js_str(reveal_params)\
-                       + revealjs_dependencies\
-                       + revealjs_post\
+    script_node.text = revealjs_pre \
+                       + dict_to_js_str(reveal_params) \
+                       + revealjs_dependencies \
+                       + revealjs_post \
                        + revealjs_fs
     root.append(script_node)
 
@@ -317,7 +326,7 @@ def generate_contact_slide(slides_yaml, conf):
 def dict_to_js_str(dictionary):
     js_str = ''
     for key in dictionary.keys():
-        js_str += key+': '
+        js_str += key + ': '
         value = dictionary[key].lower()
         if value == 'true' or value == 'false':
             js_str += value
@@ -369,7 +378,17 @@ def main():
     parser.add_argument('filename', help='Input file')
     args = parser.parse_args()
 
-    conf = yaml.load(open('parser_conf.yaml'))
+    try:
+        conf = yaml.load(open('parser_conf.yaml'))
+    except IOError:
+        conf = {'html':
+                    {'slides': {'title': 'h2', 'content': 'p'},
+                     'main': {
+                        'title': 'h1',
+                        'description': 'h3',
+                        'author': 'div',
+                        'social': ''
+               }}}
     slide_yaml = yaml.load(open(args.filename))
     root_node = parse_yaml(conf, slide_yaml)
 

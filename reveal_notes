@@ -4,7 +4,7 @@
 - <section data-markdown>
 	<script type="text/template">
   Markdown support
-- <p class="fragment"> Fragment inside a section
+- <p class="fragment" data-fragment-index="1"> Fragment inside a section
 - Fragment styles: grow, shrink, roll-in, fadeout, current-visible, highlight-blue, highlight-red
   <p class="fragment grow">
 - transitions
@@ -39,4 +39,3 @@
 - Custom JS per slide
   + <section data-state="eventname.blah">
   + <script type="text/javascript">Reveal.addEventListener("eventname.blah", function() {})</script>
-

@@ -58,8 +58,22 @@ slides:
               System.out.println();
             }
     type: "code"
-  - type: 'file'
-    filename: 'docker_tools.md'
+  - type: fragment
+    fragments:
+      - 'fragment 1'
+      - 'fragment 2'
+      - 'fragment 3'
+  - children:
+    - title: Slide5
+      type: fragment
+      fragments:
+        - 'slide 5.1'
+        - 'slide 5.2'
+    - type: fragment
+      title: 'Slide 5/2'
+      fragments:
+        - 'slide 5/2.1'
+        - 'slide 5/2.2'
   - children:
     - title: Child41
       content: "This is child content"
