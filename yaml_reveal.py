@@ -394,7 +394,8 @@ def main():
                         'title': 'h1',
                         'description': 'h3',
                         'author': 'div',
-                        'social': ''
+                        'social': '',
+                        'fragment': 'p'
                }}}
     slide_yaml = yaml.load(open(args.filename))
     root_node = parse_yaml(conf, slide_yaml)
