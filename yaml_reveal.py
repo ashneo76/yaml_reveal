@@ -24,10 +24,7 @@ def parse_slide(slide, conf):
             type = 'text'
 
         if type == 'text':
-            if 'title' in slide and slide['title'] != '':
-                title = et.Element(conf['title'])
-                title.text = slide['title']
-                et_slide.append(title)
+            title_append(et_slide, slide, conf['title'])
             if 'content' in slide:
                 content = slide['content']
                 section = et.Element(conf['content'])
@@ -42,10 +39,7 @@ def parse_slide(slide, conf):
                 section.append(script)
                 et_slide.append(section)
         elif type == 'code':
-            if 'title' in slide and slide['title'] != '':
-                title = et.Element(conf['title'])
-                title.text = slide['title']
-                et_slide.append(title)
+            title_append(et_slide, slide, conf['title'])
             if 'content' in slide and slide['content'] != '':
                 pre_node = et.Element('pre')
                 code_node = et.Element('code', {'data-trim': ''})
@@ -76,16 +70,22 @@ def parse_slide(slide, conf):
                 et_slide.attrib['data-charset'] = charset
                 add_notes = False
         elif type == 'fragment':
-            if 'title' in slide and slide['title'] != '':
-                title = et.Element(conf['title'])
-                title.text = slide['title']
-                et_slide.append(title)
+            title_append(et_slide, slide, conf['title'])
             count = 1
             for fragment in slide['fragments']:
                 p_node = et.Element('p', {'class': 'fragment', 'data-fragment-index': str(count)})
                 p_node.text = fragment
                 et_slide.append(p_node)
                 count += 1
+        elif type == 'ul' or type == 'ol':
+            title_append(et_slide, slide, conf['title'])
+            list_node = et.Element(type)
+            if 'items' in slide:
+                for item in slide['items']:
+                    list_item = et.Element('li')
+                    list_item.text = item
+                    list_node.append(list_item)
+            et_slide.append(list_node)
         else:
             et_slide = None
 
@@ -321,6 +321,13 @@ def generate_contact_slide(slides_yaml, conf):
     root.append(email)
 
     return root
+
+
+def title_append(et_slide, slide, title_tag):
+    if 'title' in slide and slide['title'] != '':
+        title = et.Element(title_tag)
+        title.text = slide['title']
+        et_slide.append(title)
 
 
 def dict_to_js_str(dictionary):

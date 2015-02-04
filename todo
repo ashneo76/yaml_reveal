@@ -1,2 +1,3 @@
-- Add fragment support
+- Uniform method signature of returning elemens versus appending them to the root
 - Fix pressing 'f' in fullscreen mode to exit full screen mode
+- Add custom background support

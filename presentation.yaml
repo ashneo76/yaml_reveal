@@ -58,11 +58,23 @@ slides:
               System.out.println();
             }
     type: "code"
-  - type: fragment
+  - title: 'Fragments'
+    type: fragment
     fragments:
       - 'fragment 1'
       - 'fragment 2'
       - 'fragment 3'
+  - children:
+    - title: 'Unordered list'
+      type: ul
+      items:
+        - 'item 1'
+        - 'item 2'
+    - title: 'Ordered list'
+      type: ol
+      items:
+        - 'item a'
+        - 'item b'
   - children:
     - title: Slide5
       type: fragment
