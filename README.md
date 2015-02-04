@@ -58,8 +58,11 @@ metadata:
 |hideAddressBar|true||
 |previewLinks|false||
 |transition|`'default'`|`none` `fade` `slide` `convex` `concave` `zoom`|
-|transitionSpeed|`'default'`|`default` `fast` `slow|
+|transitionSpeed|`'default'`|`default` `fast` `slow`|
 |backgroundTransition|`'default'`|`none` `fade` `slide` `convex` `concave` `zoom` Default Value: `'convex'`|
 |viewDistance|3||
 |parallaxBackgroundImage|''|`'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'`|
 |parallaxBackgroundSize|CSS syntax|`"2100px 900px`|
+
+# Slides Section
+** Please refer to the sample `presentation.yaml` included. **
