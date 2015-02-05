@@ -29,23 +29,23 @@ def parse_slide(slide, conf):
                 content = slide['content']
                 section = et.Element(conf['content'])
                 section.text = content
-                et_slide.append(section)
+                non_null_node_append(et_slide, section)
         elif type == 'md' or type == 'markdown':
             if 'content' in slide:
                 content = slide['content']
                 section = et.Element('section', {'data-markdown': ''})
                 script = et.Element('script', {'type': 'text/template'})
                 script.text = content
-                section.append(script)
-                et_slide.append(section)
+                non_null_node_append(section, script)
+                non_null_node_append(et_slide, section)
         elif type == 'code':
             title_append(et_slide, slide, conf['title'])
             if 'content' in slide and slide['content'] != '':
                 pre_node = et.Element('pre')
                 code_node = et.Element('code', {'data-trim': ''})
                 code_node.text = slide['content']
-                pre_node.append(code_node)
-                et_slide.append(pre_node)
+                non_null_node_append(pre_node, code_node)
+                non_null_node_append(et_slide, pre_node)
         elif type == 'file':
             horiz_sep = '^\\n\\n\\n'
             vert_sep = '^\\n\\n'
@@ -75,7 +75,7 @@ def parse_slide(slide, conf):
             for fragment in slide['fragments']:
                 p_node = et.Element('p', {'class': 'fragment', 'data-fragment-index': str(count)})
                 p_node.text = fragment
-                et_slide.append(p_node)
+                non_null_node_append(et_slide, p_node)
                 count += 1
         elif type == 'ul' or type == 'ol':
             title_append(et_slide, slide, conf['title'])
@@ -84,8 +84,8 @@ def parse_slide(slide, conf):
                 for item in slide['items']:
                     list_item = et.Element('li')
                     list_item.text = item
-                    list_node.append(list_item)
-            et_slide.append(list_node)
+                    non_null_node_append(list_node, list_item)
+            non_null_node_append(et_slide, list_node)
         else:
             et_slide = None
 
@@ -94,20 +94,20 @@ def parse_slide(slide, conf):
         if 'notes' in slide and add_notes:
             notes = et.Element('aside', {'class': 'notes'})
             notes.text = slide['notes']
-            et_slide.append(notes)
+            non_null_node_append(et_slide, notes)
 
     return et_slide
 
 
 def parse_slides(slides_yaml, conf):
     root = et.Element('div', {'class': 'slides'})
-    root.append(generate_main_slide(slides_yaml['metadata'], conf['html']['main']))
+    non_null_node_append(root, generate_main_slide(slides_yaml['metadata'], conf['html']['main']))
     if 'slides' in slides_yaml and \
                     slides_yaml['slides'] is not None:
         if len(slides_yaml['slides']) > 0:
             for slide_yaml in slides_yaml['slides']:
-                root.append(parse_slide(slide_yaml, conf['html']['slides']))
-    root.append(generate_contact_slide(slides_yaml['metadata'], conf['html']['main']))
+                non_null_node_append(root, parse_slide(slide_yaml, conf['html']['slides']))
+    non_null_node_append(root, generate_contact_slide(slides_yaml['metadata'], conf['html']['main']))
     return root
 
 
@@ -127,33 +127,33 @@ def generate_head_node(metadata):
         charset = metadata['charset']
     else:
         charset = 'utf-8'
-    root.append(et.Element('meta', {'charset': charset}))
+    non_null_node_append(root, et.Element('meta', {'charset': charset}))
 
     if 'presentation' in metadata:
         title_node = et.Element('title')
         title_node.text = metadata['presentation']['title']
-        root.append(title_node)
-        root.append(et.Element('meta', {'name': 'description',
-                                        'content': metadata['presentation']['description']}
+        non_null_node_append(root, title_node)
+        non_null_node_append(root, et.Element('meta', {'name': 'description',
+                                              'content': metadata['presentation']['description']}
         ))
 
     if 'author' in metadata and 'name' in metadata['author']:
-        root.append(et.Element('meta', {'name': 'author',
-                                        'content': metadata['author']['name']}))
+        non_null_node_append(root, et.Element('meta', {'name': 'author',
+                                              'content': metadata['author']['name']}))
 
     if 'mobile' in metadata:
         is_mobile = metadata['mobile']
     else:
         is_mobile = True
     if is_mobile:
-        root.append(et.Element('meta', {'name': 'apple-mobile-web-app-capable', 'content': 'yes'}))
-        root.append(et.Element('meta', {'name': 'apple-mobile-web-app-status-bar-style',
+        non_null_node_append(root, et.Element('meta', {'name': 'apple-mobile-web-app-capable', 'content': 'yes'}))
+        non_null_node_append(root, et.Element('meta', {'name': 'apple-mobile-web-app-status-bar-style',
                                         'content': 'black-translucent'}))
-        root.append(et.Element('meta', {'name': 'viewport',
+        non_null_node_append(root, et.Element('meta', {'name': 'viewport',
                                         'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui'}))
 
     # stylesheets
-    root.append(get_stylesheet_node('css/reveal.css'))
+    non_null_node_append(root, get_stylesheet_node('css/reveal.css'))
 
     general_theme = 'night'
     code_theme = 'zenburn'
@@ -165,21 +165,21 @@ def generate_head_node(metadata):
 
     theme_elem = get_stylesheet_node('css/theme/' + general_theme + '.css')
     theme_elem.attrib['id'] = 'theme'
-    root.append(theme_elem)
-    root.append(get_stylesheet_node('lib/css/' + code_theme + '.css'))
+    non_null_node_append(root, theme_elem)
+    non_null_node_append(root, get_stylesheet_node('lib/css/' + code_theme + '.css'))
 
     if 'custom' in metadata:
         if 'css' in metadata['custom'] and type(metadata['custom']['css']) == list:
             for css in metadata['custom']['css']:
-                root.append(get_stylesheet_node(css))
+                non_null_node_append(root, get_stylesheet_node(css))
         if 'js' in metadata['custom'] and type(metadata['custom']['js']) == list:
             for js in metadata['custom']['js']:
-                root.append(get_script_node(js))
+                non_null_node_append(root, get_script_node(js))
 
         if 'font' in metadata['custom']:
             style_node = et.Element('style')
             style_node.text = 'html * { font-family: \'' + metadata['custom']['font'] + '\', serif !important; }'
-            root.append(style_node)
+            non_null_node_append(root, style_node)
 
     if 'printable' in metadata:
         is_printable = metadata['printable']
@@ -192,7 +192,7 @@ def generate_head_node(metadata):
         link.type = 'text/css';
         link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
         document.getElementsByTagName( 'head' )[0].appendChild( link );'''
-        root.append(print_node)
+        non_null_node_append(root, print_node)
 
     fullscreen_node = et.Element('script')
     fullscreen_node.text = '''
@@ -233,7 +233,7 @@ def generate_head_node(metadata):
         }
 
     '''
-    root.append(fullscreen_node)
+    non_null_node_append(root, fullscreen_node)
     return root
 
 
@@ -242,12 +242,12 @@ def generate_body_node(slides_yaml, conf):
 
     # parse slides
     slides_ctr = et.Element('div', {'class': 'reveal'})
-    slides_ctr.append(parse_slides(slides_yaml, conf))
-    root.append(slides_ctr)
+    non_null_node_append(slides_ctr, parse_slides(slides_yaml, conf))
+    non_null_node_append(root, slides_ctr)
 
     # include necessary script tags
-    root.append(get_script_node('lib/js/head.min.js'))
-    root.append(get_script_node('js/reveal.js'))
+    non_null_node_append(root, get_script_node('lib/js/head.min.js'))
+    non_null_node_append(root, get_script_node('js/reveal.js'))
 
     # reveal.js initialization
     script_node = et.Element('script', {'type': 'text/javascript'})
@@ -283,7 +283,7 @@ def generate_body_node(slides_yaml, conf):
                        + revealjs_dependencies \
                        + revealjs_post \
                        + revealjs_fs
-    root.append(script_node)
+    non_null_node_append(root, script_node)
 
     return root
 
@@ -300,9 +300,9 @@ def generate_main_slide(slides_yaml, conf):
     author = et.Element(conf['author'])
     author.text = slides_yaml['author']['name']
 
-    root.append(title)
-    root.append(desc)
-    root.append(author)
+    non_null_node_append(root, title)
+    non_null_node_append(root, desc)
+    non_null_node_append(root, author)
 
     return root
 
@@ -317,8 +317,8 @@ def generate_contact_slide(slides_yaml, conf):
     email = et.Element('a', {'href': 'mailto:' + email_addr})
     email.text = email_addr
 
-    root.append(author)
-    root.append(email)
+    non_null_node_append(root, author)
+    non_null_node_append(root, email)
 
     return root
 
@@ -327,7 +327,7 @@ def title_append(et_slide, slide, title_tag):
     if 'title' in slide and slide['title'] != '':
         title = et.Element(title_tag)
         title.text = slide['title']
-        et_slide.append(title)
+        non_null_node_append(et_slide, title)
 
 
 def dict_to_js_str(dictionary):
@@ -374,8 +374,8 @@ def parse_yaml(conf, slide_yaml):
     root_node = et.Element('html', {'lang': 'en'})
     head_node = generate_head_node(slide_yaml['metadata'])
     body_node = generate_body_node(slide_yaml, conf)
-    root_node.append(head_node)
-    root_node.append(body_node)
+    non_null_node_append(root_node, head_node)
+    non_null_node_append(root_node, body_node)
     return root_node
 
 
