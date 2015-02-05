@@ -2,9 +2,8 @@ metadata:
   author:
     name: "Ashish Shah"
     email: "a@a.com"
+    website: "a.com"
     social:
-      - link: "http://"
-        name: Website
       - link: "http://twitter.com/"
         name: "@twitterHandle"
   presentation:

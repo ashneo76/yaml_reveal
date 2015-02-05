@@ -310,15 +310,26 @@ def generate_main_slide(slides_yaml, conf):
 def generate_contact_slide(slides_yaml, conf):
     root = et.Element('section')
 
-    author = et.Element(conf['title'])
-    author.text = slides_yaml['author']['name']
+    if 'name' in slides_yaml['author']:
+        author = et.Element(conf['title'])
+        author.text = slides_yaml['author']['name']
+        non_null_node_append(root, author)
 
-    email_addr = slides_yaml['author']['email']
-    email = et.Element('a', {'href': 'mailto:' + email_addr})
-    email.text = email_addr
+    if 'email' in slides_yaml['author']:
+        email_ctr = et.Element(conf['author'])
+        email_addr = slides_yaml['author']['email']
+        email = et.Element('a', {'href': 'mailto:' + email_addr})
+        email.text = email_addr
+        non_null_node_append(email_ctr, email)
+        non_null_node_append(root, email_ctr)
 
-    non_null_node_append(root, author)
-    non_null_node_append(root, email)
+    if 'website' in slides_yaml['author']:
+        website_ctr = et.Element(conf['author'])
+        website = slides_yaml['author']['website']
+        site_node = et.Element('a', {'href': website})
+        site_node.text = website.replace('http://', '')
+        non_null_node_append(website_ctr, site_node)
+        non_null_node_append(root, website_ctr)
 
     return root
 
