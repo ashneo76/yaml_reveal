@@ -86,6 +86,15 @@ def parse_slide(slide, conf):
                     list_item.text = item
                     non_null_node_append(list_node, list_item)
             non_null_node_append(et_slide, list_node)
+        elif type == 'div':
+            title_append(et_slide, slide, conf['title'])
+            list_node = et.Element(type)
+            if 'items' in slide:
+                for item in slide['items']:
+                    list_item = et.Element('p')
+                    list_item.text = item
+                    non_null_node_append(list_node, list_item)
+            non_null_node_append(et_slide, list_node)
         else:
             et_slide = None
 
