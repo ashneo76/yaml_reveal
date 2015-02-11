@@ -47,6 +47,13 @@ slides:
   - title: "Child 2"
     content: "child 2"
     type: "text" # text, markdown/md, html, file, code
+  - title: Paragraph test
+    paragraphs:
+      - content: 'Item 1'
+        style:
+          css: |
+            font: 'serif'; font-style: italic; color: rgb(80, 110, 200)
+      - content: 'Item 3'
   - title: "Child 3"
     fragments: # content and fragments are exclusive
       - "frag 1"
