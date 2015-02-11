@@ -1,5 +1,9 @@
 - Add image/video support
+- Add style tag support
+- Add multiple <p> per slide
 - Uniform method signature of returning elemens versus appending them to the root
 - Fix pressing 'f' in fullscreen mode to exit full screen mode
 - Add custom background support
 - Fix reveal.js rendering when children contains one node with Markdown which messes up the subsequent children nodes
+- Remove theoretical limit of 4 vertical slides i
+- Add style to slides with <div> tags
