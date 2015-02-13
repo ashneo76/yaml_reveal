@@ -72,7 +72,7 @@ def parse_slide(slide, conf):
         elif type == 'fragments':
             title_append(et_slide, slide, conf['title'])
             count = 1
-            for fragment in slide['fragments']:
+            for fragment in slide['items']:
                 p_node = et.Element('p', {'class': 'fragment', 'data-fragment-index': str(count)})
                 p_node.text = fragment
                 non_null_node_append(et_slide, p_node)
