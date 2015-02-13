@@ -1,3 +1,8 @@
+## Usage
+* Tested with python 3
+* The command line is helpful to provide information about all the accepted parameters
+* `./yaml_reveal.py -o <outputfile.htm> <inputfile>`
+
 ## Metadata configuration
 
 ### Required section
