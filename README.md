@@ -1,4 +1,6 @@
 ## Usage
+
+[![Join the chat at https://gitter.im/ashneo76/yaml_reveal](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ashneo76/yaml_reveal?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 * Tested with python 3
 * The command line is helpful to provide information about all the accepted parameters
 * `./yaml_reveal.py -o <outputfile.htm> <inputfile>`
