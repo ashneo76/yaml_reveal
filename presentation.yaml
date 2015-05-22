@@ -55,7 +55,7 @@ slides:
             font: 'serif'; font-style: italic; color: rgb(80, 110, 200)
       - content: 'Item 3'
   - title: "Child 3"
-    fragments: # content and fragments are exclusive
+    items: # content and fragments are exclusive
       - "frag 1"
       - "frag 2"
   - title: "Code example"
@@ -66,7 +66,7 @@ slides:
     type: "code"
   - title: 'Fragments'
     type: fragment
-    fragments:
+    items:
       - 'fragment 1'
       - 'fragment 2'
       - 'fragment 3'
@@ -84,12 +84,12 @@ slides:
   - children:
     - title: Slide5
       type: fragments
-      fragments:
+      items:
         - 'slide 5.1'
         - 'slide 5.2'
     - type: fragment
       title: 'Slide 5/2'
-      fragments:
+      items:
         - 'slide 5/2.1'
         - 'slide 5/2.2'
   - children:

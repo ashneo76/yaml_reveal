@@ -1,0 +1,31 @@
+metadata:
+  author:
+    name: "Ashish Shah"
+    email: "a@a.com"
+    website: "a.com"
+    social:
+      - link: "http://twitter.com/"
+        name: "@twitterHandle"
+  presentation:
+    title: "Docker and Virtualization"
+    description: "A presentation on the state of docker and virtualization"
+  theme:
+    general: 'night'
+    code: 'zenburn'
+  printable: true
+  mobile: true
+  reveal:
+    transition: convex
+  custom:
+    css:
+      - 'http://fonts.googleapis.com/css?family=Slabo+27px'
+    font: 'Slabo 27px'
+slides:
+  - title: "Slide 1"
+    notes: "Slide notes"
+  - title: ""
+    type: "md"
+    content: |
+              ## THE END
+
+              * [Online](http://www.ashishshah.net)
