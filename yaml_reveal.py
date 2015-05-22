@@ -199,7 +199,7 @@ def generate_head_node(metadata):
         print_node.text = '''var link = document.createElement( 'link' );
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? '../css/print/pdf.css' : '../css/print/paper.css';
         document.getElementsByTagName( 'head' )[0].appendChild( link );'''
         non_null_node_append(root, print_node)
 
@@ -269,14 +269,14 @@ def generate_body_node(slides_yaml, conf):
     Reveal.initialize({'''
     revealjs_dependencies = '''// Optional reveal.js plugins
         dependencies: [
-            { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-            { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-            { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-            { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
-            { src: 'plugin/zoom-js/zoom.js', async: true },
-            { src: 'plugin/notes/notes.js', async: true },
-            { src: 'plugin/remotes/remotes.js', async: true },
-            { src: 'plugin/math/math.js', async: true }
+            { src: '../lib/js/classList.js', condition: function() { return !document.body.classList; } },
+            { src: '../plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: '../plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: '../plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+            { src: '../plugin/zoom-js/zoom.js', async: true },
+            { src: '../plugin/notes/notes.js', async: true },
+            { src: '../plugin/remotes/remotes.js', async: true },
+            { src: '../plugin/math/math.js', async: true }
         ]'''
     revealjs_post = '''
     });'''
@@ -374,14 +374,22 @@ def overlay_dict_on(src_dict, tgt_dict):
 
 
 def get_stylesheet_node(css_file):
+    if css_file.startswith('http://') or css_file.startswith('https://'):
+        prepend = ''
+    else:
+        prepend = '../'
     return et.Element('link', {'rel': 'stylesheet',
-                               'href': css_file,
+                               'href': prepend + css_file,
                                'type': 'text/css'})
 
 
 def get_script_node(js):
+    if js.startswith('http://') or js.startswith('https://'):
+        prepend = ''
+    else:
+        prepend = '../'
     script_node = et.Element('script', {'type': 'text/javascript',
-                                        'src': js})
+                                        'src': prepend + js})
     script_node.text = "// do nothing"
     return script_node
 
